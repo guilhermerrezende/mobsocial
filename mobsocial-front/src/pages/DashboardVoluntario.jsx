@@ -8,9 +8,10 @@ import FT2 from "../assets/FT-2.png";
 import Project1 from "../assets/Project1.svg";
 import Project2 from "../assets/Project2.svg";
 
-const DashboardVoluntario = (isVoluntario) => {
+const DashboardVoluntario = () => {
   const [isDash, setIsDash] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false); // Estado do menu hambúrguer
+  const userId = 123; // Substitua por um ID dinâmico ou carregue do estado/localStorage
 
   useEffect(() => {
     if (window.location.pathname === "/Dashboard-Voluntario") {
@@ -68,7 +69,7 @@ const DashboardVoluntario = (isVoluntario) => {
             menuOpen ? "translate-x-0" : "translate-x-full"
           } h-full transition-transform duration-300`}
         >
-          <User isDash={isDash} isVoluntario={isVoluntario} />
+          <User isDash={isDash} isVoluntario={true} userId={userId} />
         </aside>
 
         {/* Overlay para fechar o menu */}
@@ -79,25 +80,24 @@ const DashboardVoluntario = (isVoluntario) => {
           ></div>
         )}
 
-      {/* Conteúdo Principal */}
-      <main
-        className={`flex flex-col items-center flex-1 p-6 transition-all duration-300 ${
-          menuOpen ? "ml-64" : "ml-16"
-        }`}
-      >
-        <div className="w-full max-w-5xl mx-auto flex flex-col items-center">
-          <SearchBar />
-          <section className="mt-6 w-full">
-            <h2 className="text-xl font-semibold text-gray-800 mb-4 text-center">
-              Projetos Recomendados
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-6">
-              <ProjetosRecomendados projetos={projetos} />
-            </div>
-          </section>
-        </div>
-      </main>
-
+        {/* Conteúdo Principal */}
+        <main
+          className={`flex flex-col items-center flex-1 p-6 transition-all duration-300 ${
+            menuOpen ? "ml-64" : "ml-16"
+          }`}
+        >
+          <div className="w-full max-w-5xl mx-auto flex flex-col items-center">
+            <SearchBar />
+            <section className="mt-6 w-full">
+              <h2 className="text-xl font-semibold text-gray-800 mb-4 text-center">
+                Projetos Recomendados
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-6">
+                <ProjetosRecomendados projetos={projetos} />
+              </div>
+            </section>
+          </div>
+        </main>
       </div>
     </div>
   );
