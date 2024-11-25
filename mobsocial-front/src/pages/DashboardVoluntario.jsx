@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import SearchBar from "../components/SearchBar";
 import User from "../components/dashboardVoluntario/User";
 import ProjetosRecomendados from "../components/dashboardVoluntario/ProjetosRecomendados";
-import { FaBars, FaTimes } from "react-icons/fa"; // Ícones para menu hambúrguer e fechar
+import { FaBars, FaTimes } from "react-icons/fa";
 import FT from "../assets/FT.png";
 import FT2 from "../assets/FT-2.png";
 import Project1 from "../assets/Project1.svg";
@@ -10,12 +10,16 @@ import Project2 from "../assets/Project2.svg";
 
 const DashboardVoluntario = () => {
   const [isDash, setIsDash] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false); // Estado do menu hambúrguer
-  const userId = 123; // Substitua por um ID dinâmico ou carregue do estado/localStorage
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [userId, setUserId] = useState(null);
 
   useEffect(() => {
-    if (window.location.pathname === "/Dashboard-Voluntario") {
-      setIsDash(true);
+    const storedUserId = localStorage.getItem("userId");
+    if (!storedUserId) {
+      console.error("userId não encontrado no localStorage");
+    } else {
+      console.log("userId encontrado:", storedUserId);
+      setUserId(storedUserId);
     }
   }, []);
 
@@ -51,7 +55,6 @@ const DashboardVoluntario = () => {
 
   return (
     <div className="bg-gray-100 min-h-screen">
-      {/* Cabeçalho */}
       <header className="bg-white shadow-md flex items-center justify-between px-6 py-4">
         <h1 className="text-2xl font-bold text-blue-600">MobSocial</h1>
         <button
@@ -63,7 +66,6 @@ const DashboardVoluntario = () => {
       </header>
 
       <div className="flex">
-        {/* Menu Hambúrguer */}
         <aside
           className={`fixed top-0 right-0 z-50 w-64 bg-white shadow-lg transform ${
             menuOpen ? "translate-x-0" : "translate-x-full"
@@ -72,7 +74,6 @@ const DashboardVoluntario = () => {
           <User isDash={isDash} isVoluntario={true} userId={userId} />
         </aside>
 
-        {/* Overlay para fechar o menu */}
         {menuOpen && (
           <div
             className="fixed inset-0 bg-black opacity-50"
@@ -80,7 +81,6 @@ const DashboardVoluntario = () => {
           ></div>
         )}
 
-        {/* Conteúdo Principal */}
         <main
           className={`flex flex-col items-center flex-1 p-6 transition-all duration-300 ${
             menuOpen ? "ml-64" : "ml-16"

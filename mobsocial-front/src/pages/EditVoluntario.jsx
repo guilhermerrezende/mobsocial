@@ -4,6 +4,8 @@ import User from "../components/dashboardVoluntario/User";
 import EditarFoto from "../components/Voluntario/EditarFoto";
 import editVoluntario from "../services/editVoluntario";
 import getVoluntario from "../services/getVoluntario";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const EditVoluntario = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -20,18 +22,18 @@ const EditVoluntario = () => {
 
   const [errors, setErrors] = useState({});
   const voluntarioId = localStorage.getItem("userId");
-  console.log(voluntarioId)
-  
+  console.log("userId encontrado:", voluntarioId);
+
   useEffect(() => {
     setIsPerfil(true);
 
     const fetchUserData = async () => {
       try {
         const response = await getVoluntario(voluntarioId);
-        console.log("Dados carregados do usuário:", response);
+        console.log("Dados recebidos do voluntário:", response);
         setFormData(response);
       } catch (error) {
-        console.error("Erro ao carregar os dados do usuário:", error);
+        console.error("Erro ao carregar os dados do voluntário:", error);
       }
     };
 
@@ -54,16 +56,27 @@ const EditVoluntario = () => {
 
     if (Object.keys(newErrors).length === 0) {
       try {
-        const updatedData = await editVoluntario(voluntarioId, formData);
+        const updatedData = await editVoluntario(formData);
         console.log("Dados atualizados com sucesso:", updatedData);
+
+        // Exibir mensagem de sucesso
+        toast.success("Dados atualizados com sucesso!", {
+          position: "top-right",
+          autoClose: 5000,
+        });
       } catch (error) {
         console.error("Erro ao atualizar os dados:", error);
+        toast.error("Erro ao atualizar os dados. Tente novamente mais tarde.", {
+          position: "top-right",
+          autoClose: 5000,
+        });
       }
     }
   };
 
   return (
     <div className="bg-gray-100 min-h-screen">
+      <ToastContainer />
       <header className="bg-white shadow-md flex items-center justify-between px-6 py-4">
         <h1 className="text-2xl font-bold text-blue-600">MobSocial</h1>
         <button
@@ -126,32 +139,34 @@ const EditVoluntario = () => {
                 </div>
               </div>
 
-              <div>
-                <label htmlFor="cpf" className="block font-semibold text-gray-700 mb-2">
-                  CPF
-                </label>
-                <input
-                  id="cpf"
-                  type="text"
-                  value={formData.cpf}
-                  onChange={(e) => handleInputChange("cpf", e.target.value)}
-                  className="w-full p-2 border rounded-lg"
-                />
-                {errors.cpf && <p className="text-red-500">{errors.cpf}</p>}
-              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label htmlFor="cpf" className="block font-semibold text-gray-700 mb-2">
+                    CPF
+                  </label>
+                  <input
+                    id="cpf"
+                    type="text"
+                    value={formData.cpf}
+                    onChange={(e) => handleInputChange("cpf", e.target.value)}
+                    className="w-full p-2 border rounded-lg"
+                  />
+                  {errors.cpf && <p className="text-red-500">{errors.cpf}</p>}
+                </div>
 
-              <div>
-                <label htmlFor="telefone" className="block font-semibold text-gray-700 mb-2">
-                  Telefone
-                </label>
-                <input
-                  id="telefone"
-                  type="text"
-                  value={formData.telefone}
-                  onChange={(e) => handleInputChange("telefone", e.target.value)}
-                  className="w-full p-2 border rounded-lg"
-                />
-                {errors.telefone && <p className="text-red-500">{errors.telefone}</p>}
+                <div>
+                  <label htmlFor="telefone" className="block font-semibold text-gray-700 mb-2">
+                    Telefone
+                  </label>
+                  <input
+                    id="telefone"
+                    type="text"
+                    value={formData.telefone}
+                    onChange={(e) => handleInputChange("telefone", e.target.value)}
+                    className="w-full p-2 border rounded-lg"
+                  />
+                  {errors.telefone && <p className="text-red-500">{errors.telefone}</p>}
+                </div>
               </div>
 
               <div>

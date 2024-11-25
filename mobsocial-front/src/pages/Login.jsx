@@ -7,7 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [userType, setUserType] = useState("voluntario"); // Estado para o tipo de usuário
+  const [userType, setUserType] = useState("voluntario");
   const [emailError, setEmailError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
 
@@ -35,7 +35,7 @@ const Login = () => {
       const endpoint =
         userType === "voluntario"
           ? "http://localhost:8001/api/v1/loginVoluntario"
-          : "http://localhost:8001/api/v1/loginONG"; // Seleção de endpoint baseado no tipo de usuário
+          : "http://localhost:8001/api/v1/loginONG";
 
       try {
         const response = await fetch(endpoint, {
@@ -49,6 +49,7 @@ const Login = () => {
         if (response.ok) {
           const data = await response.json();
           localStorage.setItem("user", JSON.stringify(data));
+          localStorage.setItem("userId", data.data.id); // Salva o userId separadamente
 
           toast.success("Login realizado com sucesso!", {
             position: "top-right",
@@ -149,7 +150,8 @@ const Login = () => {
               Tipo de Usuário
             </p>
             <label className="mr-4">
-              <input className="mr-1"
+              <input
+                className="mr-1"
                 type="radio"
                 name="userType"
                 value="voluntario"
@@ -159,7 +161,8 @@ const Login = () => {
               Voluntário
             </label>
             <label>
-              <input className="mr-1"
+              <input
+                className="mr-1"
                 type="radio"
                 name="userType"
                 value="ong"
