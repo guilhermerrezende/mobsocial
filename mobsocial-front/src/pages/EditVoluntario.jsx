@@ -1,14 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { FaBars, FaTimes } from "react-icons/fa";
 import User from "../components/dashboardVoluntario/User";
-import EditarFoto from "../components/Voluntario/EditarFoto";
 import editVoluntario from "../services/editVoluntario";
 import getVoluntario from "../services/getVoluntario";
-import deleteVoluntario from "../services/deleteVoluntario"; // Serviço para deletar
+import deleteVoluntario from "../services/deleteVoluntario"; 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import axios from "axios";
+import { UserPhotoContext } from "../context/UserPhotoContext"; // Importando o contexto de foto de perfil
 
 const EditVoluntario = () => {
+  const { setUserPhoto } = useContext(UserPhotoContext); // Acessando a função para atualizar a foto no contexto
   const [menuOpen, setMenuOpen] = useState(false);
   const [isPerfil, setIsPerfil] = useState(false);
   const [formData, setFormData] = useState({
@@ -19,7 +21,10 @@ const EditVoluntario = () => {
     telefone: "",
     areasInteresse: "",
     experiencia: "",
+    fotoPerfil: "", // Foto de perfil
   });
+  const [photo, setPhoto] = useState(null); // Armazenando a foto selecionada
+  const [selectedFile, setSelectedFile] = useState("Nenhum arquivo escolhido");
   const [errors, setErrors] = useState({});
   const voluntarioId = localStorage.getItem("userId");
 
@@ -30,17 +35,30 @@ const EditVoluntario = () => {
       try {
         const response = await getVoluntario(voluntarioId);
         setFormData(response);
+        
+        // Atualizando a foto no contexto global, se disponível
+        if (response.fotoPerfil) {
+          setUserPhoto(response.fotoPerfil); 
+        }
       } catch (error) {
         console.error("Erro ao carregar os dados do voluntário:", error);
       }
     };
 
     fetchUserData();
-  }, [voluntarioId]);
+  }, [voluntarioId, setUserPhoto]);
 
   const handleInputChange = (field, value) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
     setErrors((prev) => ({ ...prev, [field]: "" }));
+  };
+
+  const handleFileChange = (e) => {
+    const selectedFile = e.target.files[0];
+    if (selectedFile) {
+      setSelectedFile(selectedFile.name); // Exibe o nome do arquivo selecionado
+      setPhoto(selectedFile); // Atualiza a foto
+    }
   };
 
   const handleSubmit = async () => {
@@ -88,6 +106,34 @@ const EditVoluntario = () => {
     }
   };
 
+  const handlePhotoSubmit = async () => {
+    const formDataPhoto = new FormData();
+    formDataPhoto.append("photo", photo);
+
+    try {
+      const response = await axios.post(
+        `http://localhost:8001/api/v1/TbUsuarioVoluntario/uploadPhoto/${voluntarioId}`,
+        formDataPhoto,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      toast.success(response.data.message);
+      setFormData((prev) => ({
+        ...prev,
+        fotoPerfil: response.data.data.fotoPerfil,
+      }));
+      
+      // Atualiza a foto no contexto global
+      setUserPhoto(response.data.data.fotoPerfil); 
+    } catch (error) {
+      console.error("Erro ao enviar a foto:", error);
+      toast.error("Erro ao enviar a foto. Tente novamente mais tarde.");
+    }
+  };
+
   return (
     <div className="bg-gray-100 min-h-screen">
       <ToastContainer />
@@ -121,11 +167,46 @@ const EditVoluntario = () => {
           <div className="max-w-3xl mx-auto bg-white shadow-lg rounded-lg p-6">
             <h2 className="text-2xl font-bold text-blue-600 mb-4">Alterar Dados</h2>
             <form className="flex flex-col gap-6">
-              <EditarFoto />
+              {/* Exibe a foto atual */}
+              <div className="flex justify-center mb-4">
+                <img
+                  src={`http://localhost:8001${formData.fotoPerfil}`}
+                  alt="Foto de Perfil"
+                  className="w-32 h-32 rounded-full object-cover border-2 border-gray-300"
+                />
+              </div>
 
+              <div className="mb-4">
+                <label
+                  htmlFor="file-upload"
+                  className="relative text-gray-700 cursor-pointer py-2 px-4 bg-gray-500 text-white rounded-lg hover:bg-gray-600"
+                >
+                  Alterar Foto
+                </label>
+                <input
+                  type="file"
+                  id="file-upload"
+                  onChange={handleFileChange}
+                  className="hidden"
+                />
+                {photo && (
+                  <button
+                    type="button"
+                    onClick={handlePhotoSubmit}
+                    className="ml-2 mt-2 p-2 bg-blue-600 text-white rounded-lg"
+                  >
+                    Salvar Foto
+                  </button>
+                )}
+              </div>
+
+              {/* Campos de Dados */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label htmlFor="username" className="block font-semibold text-gray-700 mb-2">
+                  <label
+                    htmlFor="username"
+                    className="block font-semibold text-gray-700 mb-2"
+                  >
                     Nome
                   </label>
                   <input
@@ -192,8 +273,7 @@ const EditVoluntario = () => {
                   value={formData.areasInteresse}
                   onChange={(e) => handleInputChange("areasInteresse", e.target.value)}
                   className="w-full p-2 border rounded-lg"
-                  rows={2}
-                ></textarea>
+                />
               </div>
 
               <div>
@@ -205,25 +285,25 @@ const EditVoluntario = () => {
                   value={formData.experiencia}
                   onChange={(e) => handleInputChange("experiencia", e.target.value)}
                   className="w-full p-2 border rounded-lg"
-                  rows={3}
-                ></textarea>
+                />
               </div>
 
-              <button
-                type="button"
-                onClick={handleSubmit}
-                className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"
-              >
-                Alterar Dados
-              </button>
-
-              <button
-                type="button"
-                onClick={handleDeleteAccount}
-                className="w-full bg-red-600 text-white py-2 rounded-lg hover:bg-red-700 transition"
-              >
-                Excluir Conta
-              </button>
+              <div className="flex gap-4 mt-4">
+                <button
+                  type="button"
+                  onClick={handleSubmit}
+                  className="p-3 bg-blue-600 text-white rounded-lg"
+                >
+                  Alterar Dados
+                </button>
+                <button
+                  type="button"
+                  onClick={handleDeleteAccount}
+                  className="p-3 bg-red-500 text-white rounded-lg"
+                >
+                  Excluir Conta
+                </button>
+              </div>
             </form>
           </div>
         </main>

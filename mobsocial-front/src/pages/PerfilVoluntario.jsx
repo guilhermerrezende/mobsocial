@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-import EditarFoto from "../components/Voluntario/EditarFoto";
-import ProjetosRecomendados from "../components/dashboardVoluntario/ProjetosRecomendados";
-import Cachorrinho from "../assets/Cachorrinho.png";
-import Logo from "../assets/LogoAnimal.svg";
 import User from "../components/dashboardVoluntario/User";
-import { FaBars, FaTimes } from "react-icons/fa"; // Ícones para menu hambúrguer e fechar
+import { FaBars, FaTimes } from "react-icons/fa";
+import Projeto1 from "../assets/images/projeto1.jpg";
+import Projeto2 from "../assets/images/projeto3.jpg";
+import FT from "../assets/FT.png";
+import FT2 from "../assets/FT-2.png";
 
 const PerfilVoluntario = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -18,30 +18,30 @@ const PerfilVoluntario = () => {
     }
   }, []);
 
-  const randomDate1 = new Date(
-    +new Date() - Math.floor(Math.random() * 10000000000)
-  );
-  const randomDate2 = new Date(
-    +new Date() - Math.floor(Math.random() * 10000000000)
-  );
-
-  const formatDate = (date) => {
-    const month = date.getMonth() + 1;
-    const year = date.getFullYear();
-    return `${month}/${year}`;
-  };
-
   const projetosInscritos = [
     {
+      id: 1,
       title: "Feira de Adoção de Animais",
-      descricao: `A "Feira de Adoção de Animais" é um projeto dedicado 
-a promover a adoção responsável de cães e gatos 
-resgatados, organizando eventos periódicos onde 
-as pessoas podem conhecer e adotar seus futuros 
-companheiros.`,
-      logo: Logo,
-      data: `${formatDate(randomDate1)} a ${formatDate(randomDate2)}`,
-      imagem: Cachorrinho,
+      descricao: `Promovendo a adoção responsável de cães e gatos resgatados, organizando eventos onde pessoas podem encontrar seus novos companheiros.`,
+      imagem: Projeto1,
+    },
+    {
+      id: 2,
+      title: "Revitalização de Parques",
+      descricao: `Transforme parques comunitários plantando árvores, pintando estruturas públicas e revitalizando áreas verdes.`,
+      imagem: Projeto2,
+    },
+    {
+      id: 3,
+      title: "Reflorestamento Urbano",
+      descricao: `Ajude a recuperar áreas verdes urbanas com o plantio de árvores nativas em locais com escassez de vegetação.`,
+      imagem: FT,
+    },
+    {
+      id: 4,
+      title: "Limpeza de Praias",
+      descricao: `Participe da preservação ambiental com ações de limpeza e conscientização nas praias locais.`,
+      imagem: FT2,
     },
   ];
 
@@ -78,23 +78,34 @@ companheiros.`,
 
         {/* Conteúdo Principal */}
         <main className="flex-1 flex flex-col items-center justify-center p-8">
-          <h1 className="text-4xl font-bold text-blue-600 text-center mb-12">
-            Meu Perfil
-          </h1>
+          <div className="bg-blue-600 text-white text-center rounded-lg shadow-md w-full max-w-3xl">
+            <h2 className="text-2xl font-semibold py-4">Projetos Inscritos</h2>
+          </div>
 
-          <div className="flex flex-col items-center gap-8 w-full">
-            {/* Foto e Projetos */}
-            <div className="bg-white shadow-lg rounded-lg p-8 flex flex-col items-center w-full max-w-3xl">
-              <EditarFoto />
-            </div>
-
-            <div className="bg-blue-600 text-white text-center rounded-lg shadow-md w-full max-w-3xl">
-              <h2 className="text-2xl font-semibold py-4">Projetos Inscritos</h2>
-            </div>
-
-            <div className="w-full max-w-3xl">
-              <ProjetosRecomendados projetos={projetosInscritos} isPerfil={true} />
-            </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6 w-full max-w-5xl">
+            {projetosInscritos.map((projeto) => (
+              <div
+                key={projeto.id}
+                className="bg-white shadow-md rounded-lg p-6 flex flex-col justify-between"
+              >
+                <img
+                  src={projeto.imagem}
+                  alt={projeto.title}
+                  className="w-full h-48 object-cover rounded-md mb-4"
+                />
+                <h3 className="text-xl font-bold text-blue-600 mb-2">
+                  {projeto.title}
+                </h3>
+                <p className="text-gray-600 text-sm mb-4">{projeto.descricao}</p>
+                {/* Botão fixo como Inscrito */}
+                <button
+                  className="w-full py-2 rounded-lg bg-green-500 text-white font-bold hover:bg-green-600 cursor-default"
+                  disabled
+                >
+                  Inscrito
+                </button>
+              </div>
+            ))}
           </div>
         </main>
       </div>

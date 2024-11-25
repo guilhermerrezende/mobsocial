@@ -18,14 +18,14 @@ const editVoluntario = async (data) => {
       {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
-          "Content-Type": "application/json",
+          "Content-Type": "application/json", // Certifique-se de que os dados sejam enviados em formato JSON
         },
       }
     );
     console.log("Resposta da API ao editar voluntário:", response.data);
     return response.data;
   } catch (error) {
-    console.error("Erro ao atualizar dados:", error);
+    console.error("Erro ao atualizar dados:", error.response ? error.response.data : error.message);
     throw error;
   }
 };

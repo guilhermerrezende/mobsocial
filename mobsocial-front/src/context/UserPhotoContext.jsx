@@ -1,11 +1,10 @@
-
 import React, { createContext, useState } from 'react';
-import UserLogo from "../assets/user.svg";
+import UserIcon from "../assets/user.svg"; // Ícone padrão
 
 export const UserPhotoContext = createContext();
 
 export const UserPhotoProvider = ({ children }) => {
-  const [userPhoto, setUserPhoto] = useState(UserLogo);
+  const [userPhoto, setUserPhoto] = useState(UserIcon);
 
   return (
     <UserPhotoContext.Provider value={{ userPhoto, setUserPhoto }}>

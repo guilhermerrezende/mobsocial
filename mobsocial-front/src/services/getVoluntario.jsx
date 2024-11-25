@@ -15,14 +15,14 @@ const getVoluntario = async () => {
       `http://localhost:8001/api/v1/TbUsuarioVoluntario/${voluntarioId}`,
       {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`, // Adicionando o token
+          Authorization: `Bearer ${localStorage.getItem("token")}`, // Adicionando o token para autenticação
         },
       }
     );
     console.log("Dados recebidos do voluntário:", response.data);
     return response.data;
   } catch (error) {
-    console.error("Erro ao buscar dados do voluntário:", error);
+    console.error("Erro ao buscar dados do voluntário:", error.response ? error.response.data : error.message);
     throw error;
   }
 };
