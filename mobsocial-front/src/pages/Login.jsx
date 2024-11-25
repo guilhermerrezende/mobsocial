@@ -144,6 +144,31 @@ const Login = () => {
               </p>
             )}
           </div>
+          <div className="mb-4">
+            <p className="text-sm font-medium text-gray-700 mb-2">
+              Tipo de Usuário
+            </p>
+            <label className="mr-4">
+              <input
+                type="radio"
+                name="userType"
+                value="voluntario"
+                checked={userType === "voluntario"}
+                onChange={(e) => setUserType(e.target.value)}
+              />
+              Voluntário
+            </label>
+            <label>
+              <input
+                type="radio"
+                name="userType"
+                value="ong"
+                checked={userType === "ong"}
+                onChange={(e) => setUserType(e.target.value)}
+              />
+              ONG
+            </label>
+          </div>
           <button
             type="submit"
             className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 font-semibold text-lg shadow-md"
