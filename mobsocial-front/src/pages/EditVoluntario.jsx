@@ -1,61 +1,69 @@
-import React, { useState, useEffect, useContext } from "react";
-import { useParams } from "react-router-dom";
-import { Checkbox } from "@mui/material";
+import React, { useState, useEffect } from "react";
 import { FaBars, FaTimes } from "react-icons/fa";
-import { UserPhotoContext } from "../context/UserPhotoContext";
 import User from "../components/dashboardVoluntario/User";
 import EditarFoto from "../components/Voluntario/EditarFoto";
 import editVoluntario from "../services/editVoluntario";
+import getVoluntario from "../services/getVoluntario";
 
 const EditVoluntario = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [isPerfil, setIsPerfil] = useState(false);
-  const { voluntarioId } = useParams();
-  const [nome, setNome] = useState("");
-  const [cpf, setCpf] = useState("");
-  const [disponibilidade, setDisponibilidade] = useState([]);
-  const [areasInteresse, setAreasInteresse] = useState([]);
-  const [experiencia, setExperiencia] = useState("");
-  const { userPhoto } = useContext(UserPhotoContext);
-  const [errors, setErrors] = useState({});
+  const [formData, setFormData] = useState({
+    id: "",
+    email: "",
+    username: "",
+    cpf: "",
+    telefone: "",
+    areasInteresse: "",
+    experiencia: "",
+  });
 
+  const [errors, setErrors] = useState({});
+  const voluntarioId = localStorage.getItem("userId");
+  console.log(voluntarioId)
+  
   useEffect(() => {
-    if (window.location.pathname === "/EditVoluntario") {
-      setIsPerfil(true);
-    }
-  }, []);
+    setIsPerfil(true);
+
+    const fetchUserData = async () => {
+      try {
+        const response = await getVoluntario(voluntarioId);
+        console.log("Dados carregados do usuário:", response);
+        setFormData(response);
+      } catch (error) {
+        console.error("Erro ao carregar os dados do usuário:", error);
+      }
+    };
+
+    fetchUserData();
+  }, [voluntarioId]);
+
+  const handleInputChange = (field, value) => {
+    setFormData((prev) => ({ ...prev, [field]: value }));
+    setErrors((prev) => ({ ...prev, [field]: "" }));
+  };
 
   const handleSubmit = async () => {
     const newErrors = {};
-    if (!nome) newErrors.nome = "Nome é obrigatório";
-    if (!cpf) newErrors.cpf = "CPF é obrigatório";
-    if (!disponibilidade.length) newErrors.disponibilidade = "Disponibilidade é obrigatória";
-    if (!areasInteresse.length) newErrors.areasInteresse = "Áreas de interesse são obrigatórias";
+    if (!formData.username) newErrors.username = "Nome é obrigatório";
+    if (!formData.email) newErrors.email = "Email é obrigatório";
+    if (!formData.cpf) newErrors.cpf = "CPF é obrigatório";
+    if (!formData.telefone) newErrors.telefone = "Telefone é obrigatório";
+
     setErrors(newErrors);
 
     if (Object.keys(newErrors).length === 0) {
-      const formData = {
-        nome,
-        cpf,
-        disponibilidade: disponibilidade.join(", "),
-        areasInteresse: areasInteresse.join(", "),
-        experiencia,
-      };
       try {
         const updatedData = await editVoluntario(voluntarioId, formData);
-        console.log("Dados atualizados:", updatedData);
+        console.log("Dados atualizados com sucesso:", updatedData);
       } catch (error) {
         console.error("Erro ao atualizar os dados:", error);
       }
     }
   };
 
-  const disponibilidadeOptions = ["Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado", "Domingo"];
-  const areasInteresseOptions = ["Educação", "Saúde", "Meio Ambiente", "Tecnologia", "Cultura"];
-
   return (
     <div className="bg-gray-100 min-h-screen">
-      {/* Cabeçalho */}
       <header className="bg-white shadow-md flex items-center justify-between px-6 py-4">
         <h1 className="text-2xl font-bold text-blue-600">MobSocial</h1>
         <button
@@ -67,7 +75,6 @@ const EditVoluntario = () => {
       </header>
 
       <div className="flex">
-        {/* Menu Hambúrguer */}
         <aside
           className={`fixed top-0 right-0 z-50 w-64 bg-white shadow-lg transform ${
             menuOpen ? "translate-x-0" : "translate-x-full"
@@ -76,7 +83,6 @@ const EditVoluntario = () => {
           <User isPerfil={isPerfil} />
         </aside>
 
-        {/* Overlay para fechar o menu */}
         {menuOpen && (
           <div
             className="fixed inset-0 bg-black opacity-50"
@@ -84,118 +90,96 @@ const EditVoluntario = () => {
           ></div>
         )}
 
-        {/* Conteúdo Principal */}
-        <main
-          className={`flex-1 p-6 transition-all duration-300 ${
-            menuOpen ? "ml-64" : "ml-16"
-          }`}
-        >
+        <main className="flex-1 p-6 transition-all duration-300">
           <div className="max-w-3xl mx-auto bg-white shadow-lg rounded-lg p-6">
             <h2 className="text-2xl font-bold text-blue-600 mb-4">Alterar Dados</h2>
             <form className="flex flex-col gap-6">
               <EditarFoto />
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {/* Nome */}
                 <div>
-                  <label htmlFor="nome" className="block font-semibold text-gray-700 mb-2">
+                  <label htmlFor="username" className="block font-semibold text-gray-700 mb-2">
                     Nome
                   </label>
                   <input
-                    id="nome"
+                    id="username"
                     type="text"
-                    value={nome}
-                    onChange={(e) => setNome(e.target.value)}
-                    className="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
-                    placeholder="Digite seu nome"
+                    value={formData.username}
+                    onChange={(e) => handleInputChange("username", e.target.value)}
+                    className="w-full p-2 border rounded-lg"
                   />
-                  {errors.nome && <p className="text-red-500 text-sm">{errors.nome}</p>}
+                  {errors.username && <p className="text-red-500">{errors.username}</p>}
                 </div>
 
-                {/* CPF */}
                 <div>
-                  <label htmlFor="cpf" className="block font-semibold text-gray-700 mb-2">
-                    CPF
+                  <label htmlFor="email" className="block font-semibold text-gray-700 mb-2">
+                    Email
                   </label>
                   <input
-                    id="cpf"
-                    type="text"
-                    value={cpf}
-                    onChange={(e) => setCpf(e.target.value)}
-                    className="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
-                    placeholder="Digite seu CPF"
+                    id="email"
+                    type="email"
+                    value={formData.email}
+                    onChange={(e) => handleInputChange("email", e.target.value)}
+                    className="w-full p-2 border rounded-lg"
                   />
-                  {errors.cpf && <p className="text-red-500 text-sm">{errors.cpf}</p>}
+                  {errors.email && <p className="text-red-500">{errors.email}</p>}
                 </div>
               </div>
 
-              {/* Disponibilidade */}
               <div>
-                <label className="block font-semibold text-gray-700 mb-2">Disponibilidade</label>
-                <div className="grid grid-cols-2 gap-2">
-                  {disponibilidadeOptions.map((dia) => (
-                    <label key={dia} className="flex items-center">
-                      <Checkbox
-                        checked={disponibilidade.includes(dia)}
-                        onChange={(e) =>
-                          setDisponibilidade((prev) =>
-                            e.target.checked
-                              ? [...prev, dia]
-                              : prev.filter((d) => d !== dia)
-                          )
-                        }
-                      />
-                      {dia}
-                    </label>
-                  ))}
-                </div>
-                {errors.disponibilidade && <p className="text-red-500 text-sm">{errors.disponibilidade}</p>}
+                <label htmlFor="cpf" className="block font-semibold text-gray-700 mb-2">
+                  CPF
+                </label>
+                <input
+                  id="cpf"
+                  type="text"
+                  value={formData.cpf}
+                  onChange={(e) => handleInputChange("cpf", e.target.value)}
+                  className="w-full p-2 border rounded-lg"
+                />
+                {errors.cpf && <p className="text-red-500">{errors.cpf}</p>}
               </div>
 
-              {/* Áreas de Interesse */}
               <div>
-                <label className="block font-semibold text-gray-700 mb-2">Áreas de Interesse</label>
-                <div className="flex flex-wrap gap-3">
-                  {areasInteresseOptions.map((area) => (
-                    <button
-                      key={area}
-                      type="button"
-                      onClick={() =>
-                        setAreasInteresse((prev) =>
-                          prev.includes(area)
-                            ? prev.filter((a) => a !== area)
-                            : [...prev, area]
-                        )
-                      }
-                      className={`py-2 px-4 rounded-lg border ${
-                        areasInteresse.includes(area)
-                          ? "bg-blue-600 text-white border-blue-600"
-                          : "bg-gray-200 text-gray-700 border-gray-300"
-                      } hover:bg-blue-500 hover:text-white transition`}
-                    >
-                      {area}
-                    </button>
-                  ))}
-                </div>
-                {errors.areasInteresse && <p className="text-red-500 text-sm mt-2">{errors.areasInteresse}</p>}
+                <label htmlFor="telefone" className="block font-semibold text-gray-700 mb-2">
+                  Telefone
+                </label>
+                <input
+                  id="telefone"
+                  type="text"
+                  value={formData.telefone}
+                  onChange={(e) => handleInputChange("telefone", e.target.value)}
+                  className="w-full p-2 border rounded-lg"
+                />
+                {errors.telefone && <p className="text-red-500">{errors.telefone}</p>}
               </div>
 
-              {/* Experiência */}
+              <div>
+                <label htmlFor="areasInteresse" className="block font-semibold text-gray-700 mb-2">
+                  Áreas de Interesse
+                </label>
+                <textarea
+                  id="areasInteresse"
+                  value={formData.areasInteresse}
+                  onChange={(e) => handleInputChange("areasInteresse", e.target.value)}
+                  className="w-full p-2 border rounded-lg"
+                  rows={2}
+                ></textarea>
+              </div>
+
               <div>
                 <label htmlFor="experiencia" className="block font-semibold text-gray-700 mb-2">
                   Experiência
                 </label>
                 <textarea
                   id="experiencia"
-                  value={experiencia}
-                  onChange={(e) => setExperiencia(e.target.value)}
-                  className="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
-                  placeholder="Descreva sua experiência"
+                  value={formData.experiencia}
+                  onChange={(e) => handleInputChange("experiencia", e.target.value)}
+                  className="w-full p-2 border rounded-lg"
                   rows={3}
                 ></textarea>
               </div>
 
-              {/* Botão de Alterar Dados */}
               <button
                 type="button"
                 onClick={handleSubmit}

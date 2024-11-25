@@ -1,9 +1,7 @@
-import React from "react";
 import axios from "axios";
-import { toast, ToastContainer } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from "react-toastify";
 
-const LoginService = async (data, token) => {
+const LoginService = async (data) => {
   try {
     const response = await axios.post(
       "http://localhost:8001/api/v1/loginVoluntario",
@@ -20,39 +18,39 @@ const LoginService = async (data, token) => {
     }
 
     const result = response.data;
-    const token = result.data.accessToken;
-    console.log(result);
-    console.log("Data:", data);
 
     if (result) {
-      localStorage.setItem("token", result.data.accessToken);
-      console.log("Token armazenado", result.data.accessToken);
-      localStorage.setItem("name", result.username);
+      const { accessToken, id, username } = result.data;
 
-      if (result.data.isOng) {
-        console.log("Login para ONG");
-      } else if (result.data.isVoluntario) {
-        console.log("Login para Voluntário");
-      }
+      // Armazenar token e ID no localStorage
+      localStorage.setItem("token", accessToken);
+      localStorage.setItem("userId", id.toString()); // Garantir que o ID seja armazenado como string
+      localStorage.setItem("username", username);
 
-      toast({
+      console.log("Login bem-sucedido. Dados armazenados:");
+      console.log("Token:", accessToken);
+      console.log("ID:", id);
+      console.log("Username:", username);
+
+      toast.success(result.message, {
         position: "top-right",
-        title: result.message,
-        status: "success",
-        duration: 5000,
-        isClosable: true,
+        autoClose: 5000,
       });
+
+      return result;
     } else {
-      toast({
-        title: "Usuário ou senha inválidos",
-        status: "error",
-        duration: 9000,
-        isClosable: true,
+      toast.error("Usuário ou senha inválidos", {
+        position: "top-right",
+        autoClose: 9000,
       });
     }
   } catch (error) {
-    console.error("Erro na requisição", error);
+    console.error("Erro na requisição:", error);
+    toast.error("Erro ao realizar login. Tente novamente mais tarde.", {
+      position: "top-right",
+      autoClose: 9000,
+    });
   }
-}
+};
 
 export default LoginService;
