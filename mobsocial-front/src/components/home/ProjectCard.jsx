@@ -1,17 +1,20 @@
-import React from 'react'
-import Logo from '../../assets/Logo.jpg'
-
-const ProjectCard = () => {
+const ProjectCard = ({ image, title, description }) => {
   return (
-    <div className='flex flex-row rounded-lg border-2 border-gray-500 p-4 justify-between'>
-      <div className='flex flex-col justify-center items-center text-center gap-2'>
-        <img src={Logo} className='h-20 w-20 rounded-full border-2 border-blue-500'></img>
-        <h1>a divindade que nos recebe será a mesma que nos condena</h1>
-        <h1>teste</h1>
+    <div className="bg-white shadow-md rounded-lg overflow-hidden border border-gray-300">
+      <img
+        src={image}
+        alt={title}
+        className="w-full h-48 object-cover sm:h-40 md:h-60 lg:h-48"
+      />
+      <div className="p-4">
+        <h3 className="font-bold text-xl text-blue-600">{title}</h3>
+        <p className="text-gray-600 mt-2">{description}</p>
+        <button className="mt-4 py-2 px-4 bg-blue-600 text-white rounded-md hover:bg-blue-500 w-full">
+          Participar
+        </button>
       </div>
-        <img src = {Logo} alt='Logo' className='rounded-lg' />
     </div>
-  )
-}
+  );
+};
 
-export default ProjectCard
+export default ProjectCard;
