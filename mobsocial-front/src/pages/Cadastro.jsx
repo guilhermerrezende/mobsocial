@@ -37,7 +37,7 @@ const Cadastro = () => {
         </button>
       </div>
 
-      <div className="w-full max-w-lg bg-white shadow-md rounded-lg p-6">
+      <div className="w-full max-w-lg bg-white shadow-lg rounded-lg p-6">
         {selectedOption === "voluntario" && <Voluntario />}
         {selectedOption === "ong" && <Ong />}
       </div>

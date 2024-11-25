@@ -149,7 +149,7 @@ const Login = () => {
               Tipo de Usuário
             </p>
             <label className="mr-4">
-              <input
+              <input className="mr-1"
                 type="radio"
                 name="userType"
                 value="voluntario"
@@ -159,7 +159,7 @@ const Login = () => {
               Voluntário
             </label>
             <label>
-              <input
+              <input className="mr-1"
                 type="radio"
                 name="userType"
                 value="ong"
