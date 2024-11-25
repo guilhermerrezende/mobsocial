@@ -68,7 +68,7 @@ const User = ({ isProjeto, isPerfil, isDash, isVoluntario }) => {
           Suporte
         </Link>
         <Link
-          to="#"
+          to="/sobre"
           className="border border-gray-300 rounded-lg p-4 text-center hover:bg-blue-600 hover:text-white"
         >
           Sobre nós

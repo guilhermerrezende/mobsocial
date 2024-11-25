@@ -7,6 +7,8 @@ import FT from "../assets/FT.png";
 import FT2 from "../assets/FT-2.png";
 import Project1 from "../assets/Project1.svg";
 import Project2 from "../assets/Project2.svg";
+import Projeto1 from "../assets/images/projeto1.jpg";
+import Projeto2 from "../assets/images/projeto3.jpg";
 
 const DashboardVoluntario = () => {
   const [isDash, setIsDash] = useState(false);
@@ -38,6 +40,14 @@ const DashboardVoluntario = () => {
 
   const projetos = [
     {
+      titulo: "Revitalização de Parque",
+      data: "15/12/2024",
+      imagem: Projeto1,
+      logo: Project1,
+      descricao: `Ajude a revitalizar parques comunitários e traga mais vida para a comunidade!`,
+      link: "/ProjetoRevitalizacao", // Caminho para a página do projeto
+    },
+    {
       titulo: "Reflorestamento Urbano",
       data: `${formatDate(randomDate1)} a ${formatDate(randomDate2)}`,
       imagem: FT,
@@ -45,11 +55,18 @@ const DashboardVoluntario = () => {
       descricao: `O projeto Reflorestamento Urbano é uma iniciativa dedicada à revitalização de áreas verdes urbanas, focada no plantio de árvores nativas em áreas com escassez de vegetação.`,
     },
     {
-      titulo: "Limpeza de Praias",
+      titulo: "Educação para Todos",
       data: `${formatDate(randomDate1)} a ${formatDate(randomDate2)}`,
       logo: Project2,
       imagem: FT2,
       descricao: `O projeto "Apoio Escolar para Crianças" tem como objetivo oferecer reforço escolar gratuito a crianças em situação de vulnerabilidade social.`,
+    },
+    {
+      titulo: "Doação de Alimentos",
+      data: `${formatDate(randomDate1)} a ${formatDate(randomDate2)}`,
+      logo: Project2,
+      imagem: Projeto2,
+      descricao: `Participe da distribuição de alimentos para famílias necessitadas.`,
     },
   ];
 

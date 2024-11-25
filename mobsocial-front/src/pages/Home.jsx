@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Header from '../components/header';
 import Projetos from '../components/home/projetos';
-import UserMenu from '../components/dashboardVoluntario/UserMenu';
+import UserMenu from '../components/dashboardVoluntario/UserMenu.jsx';
 import { useNavigate } from 'react-router-dom';
 import getUserById from '../services/userService';
 import '../index.css';

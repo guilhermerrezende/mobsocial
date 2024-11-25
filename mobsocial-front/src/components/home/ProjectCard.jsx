@@ -17,4 +17,6 @@ const ProjectCard = ({ image, title, description }) => {
   );
 };
 
+
 export default ProjectCard;
+

@@ -1,6 +1,9 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const ProjetosRecomendados = ({ projetos }) => {
+  const navigate = useNavigate();
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
       {projetos.map((projeto, index) => (
@@ -17,7 +20,14 @@ const ProjetosRecomendados = ({ projetos }) => {
             {projeto.titulo}
           </h3>
           <p className="text-gray-600 text-sm mt-2">{projeto.descricao}</p>
-          <button className="mt-4 bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600">
+          <button
+            className="mt-4 bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600"
+            onClick={() => {
+              if (projeto.link) {
+                navigate(projeto.link);
+              }
+            }}
+          >
             Participar
           </button>
         </div>

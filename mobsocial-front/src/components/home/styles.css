@@ -1,185 +1,184 @@
 /* Personalizações Gerais */
 .nav-link:hover {
-    background-color: #007bff; /* Fundo azul ao passar o mouse */
-    color: white !important; /* Texto branco ao passar o mouse */
-    border-radius: 5px;
-  }
-  
-  .bg-lightblue {
-    background-color: #e3f2fd; /* Azul clarinho para o rodapé */
-  }
-  
+  background-color: #007bff; /* Fundo azul ao passar o mouse */
+  color: white !important; /* Texto branco ao passar o mouse */
+  border-radius: 5px;
+}
+
+.bg-lightblue {
+  background-color: #e3f2fd; /* Azul clarinho para o rodapé */
+}
+
 .navbar-light .navbar-toggler {
-    color: white;
-  }
-  
-  .navbar-nav .nav-link {
-    font-weight: 500;
-  }
-  
-  .btn-outline-light:hover {
-    background-color: white;
-    color: #007bff;
-  }
-  
+  color: white;
+}
+
+.navbar-nav .nav-link {
+  font-weight: 500;
+}
+
+.btn-outline-light:hover {
+  background-color: white;
+  color: #007bff;
+}
+
 body {
-    font-family: 'Arial', sans-serif;
-    background-color: #f8f9fa;
+  font-family: 'Arial', sans-serif;
+  background-color: #f8f9fa;
 }
 
 h2 {
-    font-size: 2rem;
-    font-weight: bold;
+  font-size: 2rem;
+  font-weight: bold;
 }
 
 p {
-    font-size: 1rem;
-    color: #333;
+  font-size: 1rem;
+  color: #333;
 }
 
 .text-primary {
-    color: #007bff !important;
+  color: #007bff !important;
 }
 
 /* Botões */
 .btn-primary {
-    background-color: #007bff;
-    border-color: #007bff;
-    font-size: 1.2rem;
-    font-weight: bold;
-}
-
-.btn-primary:hover {
-    background-color: #0056b3;
-    border-color: #0056b3;
-}
-
-.btn-outline-primary {
-    color: #007bff;
-    border-color: #007bff;
-}
-
-.btn-outline-primary:hover {
-    background-color: #007bff;
-    color: #fff;
-}
-
-/* Imagens */
-.logo {
-    width: 320px; /* Ajuste o tamanho da logo conforme necessário */
-    height: auto;
-}
-
-.img-fluid {
-    border-radius: 10px;
-    transition: transform 0.3s ease;
-}
-
-.img-fluid:hover {
-    transform: scale(1.05);
-}
-
-/* Cartões */
-.card {
-    border-radius: 15px;
-}
-
-.card img {
-    border-top-left-radius: 15px;
-    border-top-right-radius: 15px;
-}
-
-.card-body {
-    padding: 2rem;
-}
-
-/* Navbar */
-.navbar-brand {
-    font-size: 1.5rem;
-    font-weight: bold;
-}
-
-/* Fundos */
-.bg-light {
-    background-color: #f8f9fa !important;
-}
-
-.bg-white {
-    background-color: #ffffff !important;
-}
-
-/* Rodapé */
-footer {
-    font-size: 0.9rem;
-}
-
-header {
-  background-image: linear-gradient(to right, #00ffea, #0056b3);
-}
-
-.card img {
-  height: 200px;
-  object-fit: cover;
-}
-
-.card-body {
-  display: flex;
-  flex-direction: column;
-}
-
-.btn-primary {
   background-color: #007bff;
   border-color: #007bff;
-  transition: background-color 0.3s ease;
+  font-size: 1.2rem;
+  font-weight: bold;
 }
 
 .btn-primary:hover {
   background-color: #0056b3;
+  border-color: #0056b3;
+}
+
+.btn-outline-primary {
+  color: #007bff;
+  border-color: #007bff;
+}
+
+.btn-outline-primary:hover {
+  background-color: #007bff;
+  color: #fff;
+}
+
+/* Imagens */
+.logo {
+  width: 320px; /* Ajuste o tamanho da logo conforme necessário */
+  height: auto;
+}
+
+.img-fluid {
+  border-radius: 10px;
+  transition: transform 0.3s ease;
+}
+
+.img-fluid:hover {
+  transform: scale(1.05);
+}
+
+/* Cartões */
+.card {
+  border-radius: 15px;
+}
+
+.card img {
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+}
+
+.card-body {
+  padding: 2rem;
+}
+
+/* Navbar */
+.navbar-brand {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+/* Fundos */
+.bg-light {
+  background-color: #f8f9fa !important;
+}
+
+.bg-white {
+  background-color: #ffffff !important;
+}
+
+/* Rodapé */
+footer {
+  font-size: 0.9rem;
+}
+
+header {
+background-image: linear-gradient(to right, #00ffea, #0056b3);
+}
+
+.card img {
+height: 200px;
+object-fit: cover;
+}
+
+.card-body {
+display: flex;
+flex-direction: column;
+}
+
+.btn-primary {
+background-color: #007bff;
+border-color: #007bff;
+transition: background-color 0.3s ease;
+}
+
+.btn-primary:hover {
+background-color: #0056b3;
 }
 
 #sobre h1 {
-    font-size: 2.5rem;
-    font-weight: bold;
-  }
-  
-  #sobre p.lead {
-    font-size: 1.2rem;
-    color: #555;
-  }
-  
-  #sobre h3 {
-    font-size: 1.8rem;
-    margin-top: 20px;
-  }
-  
-  footer {
-    background-color: #f8f9fa;
-    color: #333;
-  }
+  font-size: 2.5rem;
+  font-weight: bold;
+}
 
-  .upload-box {
-    border: 2px dashed #007bff;
-    transition: all 0.3s ease;
-  }
-  
-  .upload-box:hover {
-    background-color: #f0f8ff;
-    border-color: #0056b3;
-  }
-  
-  form label {
-    font-weight: bold;
-    color: #333;
-  }
-  
-  form input, form textarea, form select {
-    border-radius: 5px;
-    border: 1px solid #ccc;
-  }
-  
-  form input:focus, form textarea:focus, form select:focus {
-    border-color: #007bff;
-    outline: none;
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
-  }
-  
+#sobre p.lead {
+  font-size: 1.2rem;
+  color: #555;
+}
+
+#sobre h3 {
+  font-size: 1.8rem;
+  margin-top: 20px;
+}
+
+footer {
+  background-color: #f8f9fa;
+  color: #333;
+}
+
+.upload-box {
+  border: 2px dashed #007bff;
+  transition: all 0.3s ease;
+}
+
+.upload-box:hover {
+  background-color: #f0f8ff;
+  border-color: #0056b3;
+}
+
+form label {
+  font-weight: bold;
+  color: #333;
+}
+
+form input, form textarea, form select {
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+form input:focus, form textarea:focus, form select:focus {
+  border-color: #007bff;
+  outline: none;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
