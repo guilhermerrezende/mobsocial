@@ -4,6 +4,7 @@ import User from "../components/dashboardVoluntario/User";
 import EditarFoto from "../components/Voluntario/EditarFoto";
 import editVoluntario from "../services/editVoluntario";
 import getVoluntario from "../services/getVoluntario";
+import deleteVoluntario from "../services/deleteVoluntario"; // Serviço para deletar
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -19,10 +20,8 @@ const EditVoluntario = () => {
     areasInteresse: "",
     experiencia: "",
   });
-
   const [errors, setErrors] = useState({});
   const voluntarioId = localStorage.getItem("userId");
-  console.log("userId encontrado:", voluntarioId);
 
   useEffect(() => {
     setIsPerfil(true);
@@ -30,7 +29,6 @@ const EditVoluntario = () => {
     const fetchUserData = async () => {
       try {
         const response = await getVoluntario(voluntarioId);
-        console.log("Dados recebidos do voluntário:", response);
         setFormData(response);
       } catch (error) {
         console.error("Erro ao carregar os dados do voluntário:", error);
@@ -56,10 +54,7 @@ const EditVoluntario = () => {
 
     if (Object.keys(newErrors).length === 0) {
       try {
-        const updatedData = await editVoluntario(formData);
-        console.log("Dados atualizados com sucesso:", updatedData);
-
-        // Exibir mensagem de sucesso
+        await editVoluntario(formData);
         toast.success("Dados atualizados com sucesso!", {
           position: "top-right",
           autoClose: 5000,
@@ -70,6 +65,25 @@ const EditVoluntario = () => {
           position: "top-right",
           autoClose: 5000,
         });
+      }
+    }
+  };
+
+  const handleDeleteAccount = async () => {
+    const confirmDelete = window.confirm(
+      "Tem certeza que deseja excluir sua conta? Essa ação é permanente e não pode ser desfeita."
+    );
+    if (confirmDelete) {
+      try {
+        await deleteVoluntario(voluntarioId);
+        toast.success("Conta excluída com sucesso!");
+        localStorage.clear();
+        setTimeout(() => {
+          window.location.href = "/login";
+        }, 2000);
+      } catch (error) {
+        console.error("Erro ao excluir a conta:", error);
+        toast.error("Erro ao excluir a conta. Tente novamente mais tarde.");
       }
     }
   };
@@ -201,6 +215,14 @@ const EditVoluntario = () => {
                 className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"
               >
                 Alterar Dados
+              </button>
+
+              <button
+                type="button"
+                onClick={handleDeleteAccount}
+                className="w-full bg-red-600 text-white py-2 rounded-lg hover:bg-red-700 transition"
+              >
+                Excluir Conta
               </button>
             </form>
           </div>
